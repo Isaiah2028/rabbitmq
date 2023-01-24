@@ -10,23 +10,22 @@ import java.util.concurrent.TimeoutException;
  * @date: 2023/1/20 18:38
  * TODO 消费者
  */
-public class Consumer_Queues2 {
+public class Consumer_PubSub1 {
     public static void main(String[] args) throws IOException, TimeoutException {
-        //创建连接工厂
+        //1创建连接工厂
         ConnectionFactory factory = new ConnectionFactory();
-        //设置参数
+        //2设置参数
         factory.setHost("121.40.160.237");
         factory.setPort(5672);
         factory.setUsername("admin");
         factory.setPassword("123");
-        //创建连接
+        //3创建连接
         Connection connection = factory.newConnection();
-        //创建Channel
+        //4创建Channel
         Channel channel = connection.createChannel();
-        //创建队列Queue
-        channel.queueDeclare("queues", true, false, false, null);
-
-        //接收消息
+        String queue1Name = "test_fanout_queue1";
+        String queue2Name = "test_fanout_queue2";
+        //5接收消息
         Consumer consumer = new DefaultConsumer(channel){
             /**
              * 回调方法，方法收到消息后会自动执行该方法
@@ -34,7 +33,7 @@ public class Consumer_Queues2 {
              * @param envelope  获取一些信息，交换机，路由key。。。
              * @param properties 配置信息
              * @param body  数据
-             * @throws IOException 异常抛出
+             * @throws IOException  异常抛出
              */
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -44,12 +43,14 @@ public class Consumer_Queues2 {
                 System.out.println("RoutingKey=={}"+envelope.getRoutingKey());
                 System.out.println("properties=={}"+properties);*/
                 System.out.println("body=={}"+new String(body));
+                System.out.println("将日志打印到控制台.....");
 
             }
         };
-        channel.basicConsume("queues",true,consumer);
+        channel.basicConsume(queue1Name,true,consumer);
 
         //监听消息，不关闭资源
+
 
     }
 }
