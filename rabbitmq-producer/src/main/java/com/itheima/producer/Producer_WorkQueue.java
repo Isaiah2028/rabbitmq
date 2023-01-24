@@ -28,13 +28,15 @@ public class Producer_WorkQueue {
         //创建Channel
         Channel channel = connection.createChannel();
         //创建队列Queue
-        channel.queueDeclare("hello_world", true, false, false, null);
+        channel.queueDeclare("queues", true, false, false, null);
         //发送消息
-        String body = "";
-        channel.basicPublish("", "hello_world", null, body.getBytes());
+        for (int i = 0; i < 10; i++) {
+            String body = i + "hello,queues";
+            channel.basicPublish("", "queues", null, body.getBytes());
+        }
         System.out.println("生产者发送消息成功！！");
-        // channel.close();
-        // connection.close();
+        channel.close();
+        connection.close();
 
     }
 }
