@@ -43,15 +43,11 @@ public class Consumer_Topic1 {
                 System.out.println("RoutingKey=={}"+envelope.getRoutingKey());
                 System.out.println("properties=={}"+properties);*/
                 System.out.println("body=={}" + new String(body));
-//                System.out.println("将日志打印到控制台.....");
+//                System.out.println("将 日志打印到控制台.....");
                 System.out.println("将日志信息存入数据库.....");
-
             }
         };
         channel.basicConsume(queue1Name, true, consumer);
-
         //监听消息，不关闭资源
-
-
     }
 }
